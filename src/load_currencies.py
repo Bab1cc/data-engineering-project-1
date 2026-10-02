@@ -45,9 +45,13 @@ def load_currencies(rows):
     finally:
         conn.close()
 
-
-if __name__ == "__main__":
+def run_currencies_load():
+    """Run the full ETL for currencies: extract, transform, load."""
     data = extract_currencies()
     rows = transform_currencies(data)
     load_currencies(rows)
-    print(f"Loaded {len(rows)} currencies in dim_currency.")
+    print(f"Loaded {len(rows)} currencies into dim_currency.")
+
+
+if __name__ == "__main__":
+    run_currencies_load()
