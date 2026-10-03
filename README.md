@@ -26,6 +26,7 @@ flowchart LR
 - **SQL** – data modeling, analytical views, window functions, data quality checks
 - **Windows Task Scheduler** – daily scheduling
 - **Git / GitHub** – version control
+- **Streamlit** – interactive dashboard
 
 ## Data Source
 
@@ -140,7 +141,8 @@ LIMIT 5;
 │   ├── load_currencies.py       # ETL for dim_currency
 │   ├── load_rates.py            # incremental ETL for fact_exchange_rate
 │   ├── data_quality_checks.py   # automated data quality checks
-│   └── run_pipeline.py          # runs the full pipeline in order
+│   ├── run_pipeline.py          # runs the full pipeline in order
+│   └── dashboard.py             # Streamlit dashboard built on the analytical views
 ├── logs/                        # pipeline logs (git-ignored)
 ├── .env.example                 # template for database settings
 ├── requirements.txt
@@ -155,3 +157,7 @@ LIMIT 5;
 - Add unit tests for the transform functions and CI with GitHub Actions
 - Add cross-rate views (e.g. USD/JPY derived from EUR-based rates), moving averages and volatility metrics
 - Deploy the database and pipeline to the cloud so it does not depend on a local machine
+
+## Dashboard
+
+![FX Rates Dashboard](images/dashboard.png)
