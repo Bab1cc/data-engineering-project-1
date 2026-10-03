@@ -27,6 +27,8 @@ flowchart LR
 - **Windows Task Scheduler** – daily scheduling
 - **Git / GitHub** – version control
 - **Streamlit** – interactive dashboard
+- **Apache Airflow** – orchestration (DAG with task dependencies and retries)
+- **Docker / Docker Compose** – runs Airflow locally
 
 ## Data Source
 
@@ -127,12 +129,15 @@ LIMIT 5;
    python src/run_pipeline.py
    ```
    The first run loads the full history since 1999 and takes a little longer. Every later run loads only new data.
+6. 
 
 **Scheduling (Windows):** `run_pipeline.bat` starts PostgreSQL if it is not running, runs the pipeline and appends the output to `logs/pipeline.log`. It is scheduled in Windows Task Scheduler to run every weekday at 17:00, after the ECB publishes new rates. Paths in the `.bat` file need to be adjusted to your machine.
 
 ## Project Structure
 
 ```
+├── dags/
+│   └── fx_rates_pipeline.py     # Airflow DAG: currencies → rates → quality checks
 ├── sql/
 │   ├── create_tables.sql        # star schema + dim_date population
 │   └── views.sql                # analytical views
@@ -146,13 +151,12 @@ LIMIT 5;
 ├── logs/                        # pipeline logs (git-ignored)
 ├── .env.example                 # template for database settings
 ├── requirements.txt
-└── run_pipeline.bat             # entry point for Task Scheduler
+├── run_pipeline.bat             # alternative scheduling without Docker (Task Scheduler)
+└── docker-compose.yml           # runs Airflow locally in Docker
 ```
 
 ## Future Improvements
 
-- Orchestrate the pipeline with **Apache Airflow** running in **Docker**, with task dependencies and retries
-- Build a **dashboard** (Streamlit or Power BI) on top of the analytical views
 - Replace `print` with Python's `logging` module and add log rotation
 - Add unit tests for the transform functions and CI with GitHub Actions
 - Add cross-rate views (e.g. USD/JPY derived from EUR-based rates), moving averages and volatility metrics

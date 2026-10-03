@@ -1,0 +1,18 @@
+services:
+  airflow:
+    image: apache/airflow:3.3.2
+    container_name: airflow
+    command: standalone
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    environment:
+      DB_HOST: host.docker.internal
+      AIRFLOW__CORE__LOAD_EXAMPLES: "False"
+      AIRFLOW__CORE__SIMPLE_AUTH_MANAGER_ALL_ADMINS: "True"
+      AIRFLOW__CORE__DEFAULT_TIMEZONE: "Europe/Belgrade"
+      _PIP_ADDITIONAL_REQUIREMENTS: "python-dotenv"
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./src:/opt/airflow/project/src
